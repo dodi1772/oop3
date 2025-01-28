@@ -15,7 +15,8 @@
 				switch (opcio)
 				{
 					case 1:
-                        Console.Write("Add meg a számlatulajdonos nevét: ");
+						Console.Clear();
+						Console.Write("Add meg a számlatulajdonos nevét: ");
 						string szamlatul=Console.ReadLine();
                         Console.Write("Add meg a kezdőtőkét: ");
 						int kezdoegyenleg=Convert.ToInt32(Console.ReadLine());
@@ -38,6 +39,43 @@
                             Console.WriteLine("Nincs ilyen számla.");
                         }
                         break;
+					case 3:
+						Console.WriteLine("Adj meg egy számlaszámot: ");
+						string szamlabolkivetel = Console.ReadLine();
+						var szamlakivetel = bank.SzamlaKeres(szamlabolkivetel);
+						if (szamlakivetel != null)
+						{
+							Console.Write("Add meg a kifizetendő összeget: ");
+							int osszeg = Convert.ToInt32(Console.ReadLine());
+							szamlakivetel.kifizet(osszeg);
+						}
+						else
+						{
+							Console.WriteLine("Nincs ilyen számla.");
+						}
+						break;
+					case 4:
+						Console.WriteLine("Adj meg egy számlaszámot: ");
+						string szamlaszam = Console.ReadLine();
+						var szamlavane = bank.SzamlaKeres(szamlaszam);
+						if (szamlavane != null)
+						{
+                            Console.WriteLine($"{szamlavane.Szamlaadatok()}");
+						}
+						else
+						{
+							Console.WriteLine("Nincs ilyen számla.");
+						}
+						break;
+					case 5:
+						bank.Osszesbankszamla();
+						break;
+					case 6:
+                        Console.WriteLine("Kilépés...");
+						break;
+					default:
+                        Console.WriteLine("Kérlek adj meg érvényes számot.");
+						break;
                 }
             }
         }

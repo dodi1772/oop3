@@ -27,7 +27,7 @@ namespace oop3
             }
 			return null;
         }
-		public void Osszessazmlaadat()
+		public void Osszesbankszamla()
 		{
             if (szamlak.Count==0)
             {
