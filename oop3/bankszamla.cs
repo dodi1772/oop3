@@ -50,5 +50,9 @@ namespace oop3
                 Console.WriteLine("Az összeg nem lehet több mint a rendelkezésre álló egyenleg, vagy negatív.");
             }
         }
+		public string Szamlaadatok()
+		{
+			return $"Számlaszám: {SzamlaSzam} \nTulajdonos: {TulNev} \nEgyenleg: {Egyenleg}";
+		}
 	}
 }
