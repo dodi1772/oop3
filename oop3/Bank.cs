@@ -27,5 +27,20 @@ namespace oop3
             }
 			return null;
         }
+		public void Osszessazmlaadat()
+		{
+            if (szamlak.Count==0)
+            {
+                Console.WriteLine("Nincs egy számla sem a rendszerben.");
+            }
+			else
+			{
+                Console.WriteLine("Összes számla:");
+                foreach (var szamla in szamlak)
+                {
+                    Console.WriteLine($"{szamla.Szamlaadatok()}");
+                }
+            }
+        }
 	}
 }

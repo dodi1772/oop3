@@ -52,7 +52,7 @@ namespace oop3
         }
 		public string Szamlaadatok()
 		{
-			return $"Számlaszám: {SzamlaSzam} \nTulajdonos: {TulNev} \nEgyenleg: {Egyenleg}";
+			return $"\nSzámlaszám: {SzamlaSzam} \nTulajdonos: {TulNev} \nEgyenleg: {Egyenleg}";
 		}
 	}
 }
