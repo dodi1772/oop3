@@ -1,18 +1,17 @@
 ﻿namespace oop3
 {
-	     internal class Program
+    internal class Program
     {
         static void Main(string[] args)
         {
             bool fut = true;
-
             Bank bank = new Bank();
-
+            string tipus = "";
             Console.Write("Adj meg egy éves kamatszázalékot: ");
             int eveskamatszazalek=Convert.ToInt32(Console.ReadLine());
             while (fut)
             {
-                Console.WriteLine("\t1. Új számla nyitása\n\t2. Összeg befizetése\n\t3. Összeg levétel\n\t4. Adatlekérés egy számláról\n\t5. Összes számla adatai\n\t6. Tranzakciók számlán belül\n\t7. Összes számla kamat kiszámolása\n\t8. Számla törlése\n\t9. Számla áthelyezése új tulajdonoshoz\n\t10. Jelentés generálás\n\t11. Keresés név alapján\n\t12. Kilépés");
+                Console.WriteLine("\t1. Új számla nyitása\n\t2. Összeg befizetése\n\t3. Összeg levétel\n\t4. Adatlekérés egy számláról\n\t5. Összes számla adatai\n\t6. Tranzakciók számlán belül\n\t7. Összes számla kamat kiszámolása\n\t8. Számla törlése\n\t9. Számla áthelyezése új tulajdonoshoz\n\t10. Jelentés generálás\n\t11. Keresés név alapján\n\t12. Más valuta befizetés\n\t13. Más valuta levétele\n\t14. Kilépés");
                 Console.Write("Válassz egy lehetőséget: ");
                 int opcio = Convert.ToInt32(Console.ReadLine());
                 switch (opcio)
@@ -23,7 +22,9 @@
                         string szamlatul = Console.ReadLine();
                         Console.Write("Add meg a kezdőtőkét: ");
                         int kezdoegyenleg = Convert.ToInt32(Console.ReadLine());
-                        bank.SzamlaCreate(szamlatul, kezdoegyenleg);
+                        Console.Write("Milyen valuta alapú legyen a számla: ");
+                        string valuta= Console.ReadLine();
+                        bank.SzamlaCreate(szamlatul, kezdoegyenleg, valuta);
                         Console.WriteLine($"Számla sikeresen létrehozva");
                         break;
                     case 2:
@@ -143,6 +144,54 @@
                         bank.SzamlaKeresTulAlapjan(tulajnev);
                         break;
                     case 12:
+                        Console.Clear();
+                        tipus = "bef";
+                        Console.Write("Adj meg egy számlaszámot: ");
+                        string szaSzam = Console.ReadLine();
+                        var szKereses1 = bank.SzamlaKeres(szaSzam);
+                        if (szKereses1 != null)
+                        {
+                            Console.Write("Add meg a kezdő árfolyamot: ");
+                            string kezdoarfolyam = Console.ReadLine();
+                            Console.Write("Add meg a célárfolyamot (meg kell egyeznie a bankszámla valutájával): ");
+                            string celarfolyam = Console.ReadLine();
+                            Console.Write($"Add meg az árfolyamot(ponttal elválasztva olyan logikával, hogy mennyivel kell szorozni a(z) {kezdoarfolyam}-ot, hogy {celarfolyam}-ot kapj.): ");
+                            double valutabeker = Convert.ToDouble(Console.ReadLine());
+                            Console.Write($"Add meg {kezdoarfolyam}-ban a berakni kívánt összeget: ");
+                            int bekerosszeg = Convert.ToInt32(Console.ReadLine());
+                            szKereses1.ValutaValto(valutabeker,bekerosszeg,kezdoarfolyam,celarfolyam,tipus);
+                        }
+                        else
+                        {
+                            Console.WriteLine("Nincs ilyen számla.");
+                        }
+
+                        break;
+                    case 13:
+                        Console.Clear();
+                        tipus = "kif";
+                        Console.Write("Adj meg egy számlaszámot: ");
+                        string szaSzam1 = Console.ReadLine();
+                        var szKereses2 = bank.SzamlaKeres(szaSzam1);
+                        if (szKereses2 != null)
+                        {
+                            Console.Write("Add meg a kezdő árfolyamot: ");
+                            string kezdoarfolyam = Console.ReadLine();
+                            Console.Write("Add meg a célárfolyamot (meg kell egyeznie a bankszámla valutájával): ");
+                            string celarfolyam = Console.ReadLine();
+                            Console.Write($"Add meg az árfolyamot(ponttal elválasztva olyan logikával, hogy mennyivel kell szorozni a(z) {kezdoarfolyam}-ot, hogy {celarfolyam}-ot kapj.): ");
+                            double valutabeker = Convert.ToDouble(Console.ReadLine());
+                            Console.Write($"Add meg {kezdoarfolyam}-ban a kivenni kívánt összeget: ");
+                            int bekerosszeg = Convert.ToInt32(Console.ReadLine());
+
+                            szKereses2.ValutaValto(valutabeker, bekerosszeg, kezdoarfolyam, celarfolyam, tipus);
+                        }
+                        else
+                        {
+                            Console.WriteLine("Nincs ilyen számla.");
+                        }
+                        break;
+                    case 14:
                         Console.Clear();
                         Console.WriteLine("Kilépés...");
                         fut = false;
