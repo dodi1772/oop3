@@ -12,16 +12,18 @@ namespace oop3
         public string SzamlaSzam { get; private set; }
         public string TulNev { get; set; }
         public double Egyenleg { get; set; }
+        public string Valuta {  get; private set; }
 
         public int Limit = -10000;
 
         private List<Tranzakcio> tranzakciok = new List<Tranzakcio>();
 
-        public bankszamla(string tulnev, int kezdoegyenleg)
+        public bankszamla(string tulnev, int kezdoegyenleg, string valuta)
         {
             SzamlaSzam = $"ACC{kovetkezoSzamlaSzam++}";
             TulNev = tulnev;
             Egyenleg = kezdoegyenleg;
+            Valuta = valuta;
 
     }
 
@@ -45,6 +47,7 @@ namespace oop3
             {
                 if (osszeg > 0 && Egyenleg >= osszeg)
                 {
+                    EgyenlegFigyelo(Egyenleg, osszeg);
                     Egyenleg -= osszeg;
                     tranzakciok.Add(new Tranzakcio("Kifizetés", osszeg, DateTime.Now));
                     Console.WriteLine($"Az összeg kifizetve a(z) {SzamlaSzam} számláról.");
@@ -62,7 +65,7 @@ namespace oop3
 
         public string Szamlaadatok()
         {
-            return $"\nSzámlaszám: {SzamlaSzam} \nTulajdonos: {TulNev} \nEgyenleg: {Egyenleg}";
+            return $"\nSzámlaszám: {SzamlaSzam} \nTulajdonos: {TulNev} \nEgyenleg: {Egyenleg} \nValuta: {Valuta}";
         }
 
         public string TranzakcioTortenet()
@@ -79,6 +82,36 @@ namespace oop3
         public void VisszaSzamoz()
         {
             kovetkezoSzamlaSzam--;
+        }
+        private void EgyenlegFigyelo(double egyenleg, int osszeg)
+        {
+            if (egyenleg-osszeg<1000)
+            {
+                Console.WriteLine($"Figyelmeztetés: Az egyenleg 1000 {Valuta} alá csökkent.");
+            }
+        }
+        public void ValutaValto(double arfolyam, int osszeg, string kezdovaluta, string celvaluta, string tipus)
+        {
+            double osszeg_valtva = 0;
+            if (Valuta!=celvaluta)
+            {
+                Console.WriteLine($"A célvaluta nem egyezik a számla valutájával: {Valuta}");
+            }
+            else
+            {
+                osszeg_valtva = arfolyam * osszeg;
+                Console.WriteLine($"Sikeresen átváltva {kezdovaluta}-ról {celvaluta}-ra.");
+                if (tipus=="bef")
+                {
+                    Egyenleg += osszeg_valtva;
+                    Console.WriteLine("Sikeresen hozzáadva az egyenleghez.");
+                }
+                else if (tipus=="kif")
+                {
+                    Egyenleg -= osszeg_valtva;
+                    Console.WriteLine("Sikeresen levonva az egyenlegből.");
+                }
+            }
         }
     }
 }
